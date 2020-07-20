@@ -15,11 +15,3 @@ docker run --rm \
 
 docker run -p $INFLUXDB_PORT:8086 --name influxdb -d \
 	-v $PWD:/var/lib/influxdb influxdb
-	
-	#-e INFLUXDB_DB=$INFLUXDB_DB\
-	#-e INFLUXDB_HTTP_AUTH_ENABLED=true\
-	#-e INFLUXDB_ADMIN_USER=$INFLUXDB_ADMIN_USER\
-	#-e INFLUXDB_ADMIN_PASSWORD=$INFLUXDB_ADMIN_PASSWORD\
-	#-e INFLUXDB_USER=$INFLUXDB_USER\
-	#-e INFLUXDB_USER_PASSWORD=$INFLUXDB_USER_PASSWORD\
-	#-v $PWD:/var/lib/influxdb influxdb
