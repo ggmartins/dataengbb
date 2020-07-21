@@ -2,6 +2,8 @@
 
 docker stop influxdb
 docker rm influxdb
-rm -Rf data 
-rm -Rf meta 
-rm -Rf wal 
+rm -f $INFLUXDB_PATH/influxdb.cert.conf
+rm -Rf $INFLUXDB_PATH/cert
+rm -Rf $INFLUXDB_PATH/data 
+rm -Rf $INFLUXDB_PATH/meta 
+rm -Rf $INFLUXDB_PATH/wal 
