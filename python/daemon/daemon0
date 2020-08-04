@@ -20,17 +20,28 @@ sp_stop = sp.add_parser('stop', help='Stops %(prog)s daemon')
 sp_status = sp.add_parser('status', help='Show the status of %(prog)s daemon')
 sp_restart = sp.add_parser('restart', help='Restarts %(prog)s daemon')
 sp_debug = sp.add_parser('debug', help='Starts %(prog)s daemon in debug mode')
-sp_start.add_argument('-v', '--verbose', action='store_true', help='log extra information')
-sp_debug.add_argument('-v', '--verbose', action='store_true', help='log extra information')
+sp_start.add_argument('-v', '--verbose', action='store_true', help='log extra informations')
+sp_debug.add_argument('-v', '--verbose', action='store_true', help='log extra informations')
+
+class MainCtrl:
+  thread_continue = True
+  thread_token = "token"
+
+mainctrl = MainCtrl()
+
+def main_thread_stop(signum=None, frame=None):
+    mainctrl.thread_continue = False
+    mainctrl.thread_token = "test"
+    print("TOKEN:{0}".format(mainctrl.thread_token))
  
-def main_thread(args):
+def main_thread(args, mainctrl):
     verbose = args.verbose
     if verbose:
       print("MAIN:{0}".format(args))
     try:
-      while True:
+      while mainctrl.thread_continue:
          if verbose:
-            print("TIME")
+            print("TOKEN:{0}".format(mainctrl.thread_token))
          time.sleep(1)
     except KeyboardInterrupt as ke:
       if verbose:
@@ -46,10 +57,12 @@ def daemon_start(args=None):
       sys.exit(1)
     else:
       with daemon.DaemonContext(
+        stdout=sys.stdout,
+        stderr=sys.stderr,
         signal_map={
-            signal.SIGTERM: daemon_stop,
-            signal.SIGTSTP: daemon_stop,
-            signal.SIGINT: daemon_stop,
+            signal.SIGTERM: main_thread_stop,
+            signal.SIGTSTP: main_thread_stop,
+            signal.SIGINT: main_thread_stop,
             #signal.SIGKILL: daemon_stop, #SIGKILL is an Invalid argument
             signal.SIGUSR1: daemon_status,
             signal.SIGUSR2: daemon_status,
@@ -57,7 +70,7 @@ def daemon_start(args=None):
           pidfile = daemon.pidfile.PIDLockFile(pidpath)
           ):
         print("INFO: Running daemon...")
-        main_thread(args)
+        main_thread(args, mainctrl)
 
 def daemon_restart(args):
     print("INFO: Daemon Restart")
@@ -66,12 +79,16 @@ def daemon_restart(args):
     daemon_start(args)
 
 def daemon_stop(args=None):
-    print("INFO: Daemon Stop")
+    print("INFO: Daemon Stop {0}".format(args))
     if os.path.exists(pidpath):
       with open(pidpath) as pid:
-        os.kill(int(pid.readline()), signal.SIGINT)
+        try:
+          os.kill(int(pid.readline()), signal.SIGINT)
+        except ProcessLookupError as ple:
+          os.remove(pidpath)
+          print("ERROR: {0}".format(ple))
     else:
-      print("INFO: pidfile does not exist")
+      print("INFO: process isn't running (according to the absence of {0}).".format(pidpath))
 
 def daemon_debug(args):
     print("INFO: Daemon debug")
