@@ -1,0 +1,4 @@
+SELECT "metric" as "metric",  "lat", "lng", "ispcity" FROM "geometric"
+SELECT mean("value") FROM "network_traffic_application_kbpsdw" WHERE $timeFilter AND "deployment"='test'  GROUP BY time($__interval),  "application", "device"  fill(null)
+SELECT 0 - mean("value") FROM "network_traffic_application_kbpsup" WHERE $timeFilter AND "deployment" = 'test' GROUP BY time($__interval), "deployment", "application", "device"  fill(null)
+ 
