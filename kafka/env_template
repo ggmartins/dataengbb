@@ -1,0 +1,6 @@
+export SITE=
+export PASS1=
+export PASS2=
+export PRIVKEY_PEM=/etc/letsencrypt/live/$SITE/privkey.pem
+export CHAIN_PEM=/etc/letsencrypt/live/$SITE/chain.pem
+export FULLCHAIN_PEM=/etc/letsencrypt/live/$SITE/fullchain.pem
