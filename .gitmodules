@@ -1,0 +1,3 @@
+[submodule "rabbitmq/tls-gen"]
+	path = rabbitmq/tls-gen
+	url = https://github.com/michaelklishin/tls-gen
