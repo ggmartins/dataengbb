@@ -3,6 +3,7 @@ import os
 import pika
 import ssl
 import certifi
+import traceback
 from dotenv import load_dotenv
 
 # based on https://github.com/rabbitmq/rabbitmq-tutorials/blob/master/python/send.py
