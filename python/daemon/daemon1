@@ -27,30 +27,20 @@ sp_debug.add_argument('-v', '--verbose', action='store_true', help='log extra in
 class MainCtrl:
   thread_continue = True
   thread_token = "token"
-  log = None
-  def getLogger(self):
-    logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)s {%(module)s} [%(funcName)s] %(message)s', 
-	datefmt='%Y-%m-%dT%H:%M:%S',
-        filename=logpath,
-        #filemode='w', 
-	level=logging.INFO)
-    self.log = logging.getLogger("Main")
-    return self.log
 
 mainctrl = MainCtrl()
 
 def main_thread_stop(signum=None, frame=None):
     mainctrl.thread_continue = False
     mainctrl.thread_token = "test"
-    mainctrl.log.info("TOKEN:{0}".format(mainctrl.thread_token))
+    print("TOKEN:{0}".format(mainctrl.thread_token))
  
-def main_thread(args, mainctrl):
+def main_thread(args, mainctrl, log):
     verbose = False
 
-    if hasattr(args, 'verbose'):
+    if hasattr(args, 'verbose', log):
       verbose = args.verbose
 
-    log = mainctrl.getLogger()
     if verbose:
       log.info("ARGS:{0}".format(args))
     try:
@@ -86,7 +76,14 @@ def daemon_start(args=None):
           },
           pidfile = daemon.pidfile.PIDLockFile(pidpath)
           ):
-        main_thread(args, mainctrl)
+        logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)s {%(module)s} [%(funcName)s] %(message)s', 
+          datefmt='%Y-%m-%dT%H:%M:%S',
+          filename=logpath,
+          #filemode='w', 
+          level=logging.INFO)
+
+        log = logging.getLogger(__name__)
+        main_thread(args, mainctrl, log)
 
 def daemon_restart(args):
     print("INFO: {0} Restarting...".format(PROGNAME))
