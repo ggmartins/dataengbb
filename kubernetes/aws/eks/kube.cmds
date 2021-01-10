@@ -1,0 +1,35 @@
+- https://zero-to-jupyterhub.readthedocs.io/en/latest/kubernetes/amazon/step-zero-aws-eks.html
+  - https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html
+  - https://docs.aws.amazon.com/eks/latest/userguide/create-public-private-vpc.html
+- https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html
+  - https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html
+  - https://docs.aws.amazon.com/eks/latest/userguide/getting-started-console.html <--- failing with unauthorized error: https://docs.aws.amazon.com/eks/latest/userguide/troubleshooting.html#unauthorized
+
+aws --profile $AWSCLIPROFILE --region $AWSCLIREGION cloudformation create-stack --stack-name $EKSVPNSTACKNAME --template-url https://s3.us-west-2.amazonaws.com/amazon-eks/cloudformation/2020-10-29/amazon-eks-vpc-private-subnets.yaml
+
+cluster-role-trust-policy.json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "eks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+
+aws iam create-role --role-name $EKSTRUSTPOLICY --assume-role-policy-document file://"cluster-role-trust-policy.json"
+
+aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEKSClusterPolicy --role-name $EKSTRUSTPOLICY
+
+kubectl get svc
+
+// eksctl ///////////////
+
+aws eks update-kubeconfig --region us-east-2 --name $EKSCLUSTERNAME
+aws eks update-kubeconfig --region us-east-2 --name $EKSCLUSTERNAME --role-arn arn:aws:iam::$AWSUSERID:role/?
+aws ec2 create-key-pair --region us-east-2 --key-name $KEYNAME
+
