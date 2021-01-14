@@ -1,0 +1,70 @@
+https://github.com/udacity/nd9990-c3-microservices-exercises
+
+Use a Reverse Proxy to Direct Backend Requests
+https://www.youtube.com/watch?v=F0fLsUYqlvQ
+
+Reverse Proxy
+- A single interface that forwards requests on behalf of the client and appears to the client as the origin of the responses.
+- Useful for abstracting multiple microservices to appear as a single resource.
+
+API Gateway
+- A form of a reverse proxy that serves as an abstraction of the interface to other services.
+
+Sample Reverse Proxy
+- Nginx is a web server that can be used as a reverse proxy. Configurations can be specified with an nginx.conf file.
+
+- Sample bare-bones nginx.conf file:
+
+events {
+}
+http {
+  server {
+      listen <PORT_NUMBER>;
+      location /<PROXY_PATH>/ {
+          proxy_pass http://<REDIRECT_PATH>/;
+      }
+  }
+}
+
+Setting up the Reverse Proxy
+https://www.youtube.com/watch?v=jsS6y6Eitvs
+
+Deploying the Reverse Proxy
+https://www.youtube.com/watch?v=-6NZf67RYCI
+
+Commands
+The commands that we use to deploy the reverse proxy are the same as that used to deploy the application. kubectl is used as our tool to interface with our cluster and the YAML file specifies the configuration for our reverse proxy.
+
+kubectl apply <REVERSE_PROXY_DEPLOYMENT>.yaml
+kubectl apply <REVERSE_PROXY_SERVICE>.yaml
+
+Key Terms - Reverse Proxy
+Term	Definition
+API Gateway	A single point of entry for groups of microservices.
+Additional Reading
+The following are some additional resources for learning more about API Gateways.
+
+AWS API Gateway
+Microservices with API Gateway - https://www.nginx.com/blog/building-microservices-using-an-api-gateway/
+
+
+https://github.com/udacity/nd9990-c3-microservices-exercises/tree/master/lesson-5-kubernetes-for-production/exercises/simple-express
+
+
+https://www.youtube.com/watch?v=6iCWyQmEJHc Solution Reverse Proxy 
+
+Dockerfile
+The Nginx service listens for requests at port 8080.
+Any requests with endpoints prefixed with /api/ will be redirected to the Kubernetes service my-app-2-svc.
+my-app-2-svc is a name that our Kubernetes cluster recognizes internally.
+
+My Dockerfile is very simple and looks like the following:
+
+FROM nginx:alpine
+
+COPY nginx.conf /etc/nginx/nginx.conf
+We take advantage of the base image that is available for Nginx and don’t need to worry about installing its dependencies.
+
+https://www.youtube.com/watch?v=o0NAqngxspE Verifying Reverse Proxy
+
+
