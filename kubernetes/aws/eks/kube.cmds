@@ -33,3 +33,12 @@ aws eks update-kubeconfig --region us-east-2 --name $EKSCLUSTERNAME
 aws eks update-kubeconfig --region us-east-2 --name $EKSCLUSTERNAME --role-arn arn:aws:iam::$AWSUSERID:role/?
 aws ec2 create-key-pair --region us-east-2 --key-name $KEYNAME
 
+eksctl create cluster --name odp-ekscluster --region us-east-2 --with-oidc --managed
+
+# or
+
+eksctl create cluster --tags environment=staging,martins=tutorial --region=us-east-2 --name=Z2JHKubernetesCluster --nodes-min=0 --nodes-max=2 --node-type=t3.medium --asg-access --verbose=4 > /tmp/eksctl.log 2>&1
+
+# or 
+
+eksctl delete cluster -f cluster.yaml

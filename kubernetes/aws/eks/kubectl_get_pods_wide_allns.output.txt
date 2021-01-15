@@ -1,0 +1,4 @@
+kubectl get pods -o wide --all-namespaces
+NAMESPACE     NAME                       READY   STATUS    RESTARTS   AGE   IP       NODE     NOMINATED NODE   READINESS GATES
+kube-system   coredns-66bc8b7b7b-nw7l4   0/1     Pending   0          30m   <none>   <none>   <none>           <none>
+kube-system   coredns-66bc8b7b7b-z7rmp   0/1     Pending   0          30m   <none>   <none>   <none>           <none>

@@ -1,0 +1,17 @@
+# https://eksctl.io/usage/creating-and-managing-clusters/
+# from https://eksctl.io/introduction/
+eksctl create cluster --tags environment=staging,martins=tutorial --region=us-east-2 --name=Z2JHKubernetesCluster --nodes-min=0 --nodes-max=2 --node-type=t3.medium --asg-access --verbose=4 > /tmp/eksctl.log 2>&1
+
+# or 
+
+eksctl create cluster -f cluster_odp.yaml
+
+# regarding auto scaling:
+
+# You will still need to install and configure Auto Scaling. See the "Enable Auto Scaling" section.
+# Also note that depending on your workloads you might need to use a separate nodegroup for each AZ.
+# See Zone-aware Auto Scaling for more info (https://eksctl.io/usage/autoscaling/).
+
+# inspecting resources:
+
+eksctl utils describe-stacks --region=us-east-2 --name=Z2JHKubernetesCluster

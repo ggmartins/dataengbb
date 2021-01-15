@@ -1,0 +1,8 @@
+kubectl get services
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.100.0.1   <none>        443/TCP   28m
+
+kubectl get pods --all-namespaces
+NAMESPACE     NAME                       READY   STATUS    RESTARTS   AGE
+kube-system   coredns-66bc8b7b7b-nw7l4   0/1     Pending   0          28m
+kube-system   coredns-66bc8b7b7b-z7rmp   0/1     Pending   0          28m
