@@ -1,0 +1,116 @@
+{
+    "kind": "ClusterConfig",
+    "apiVersion": "eksctl.io/v1alpha5",
+    "metadata": {
+        "name": "Z2JHKubernetesCluster",
+        "region": "us-east-2",
+        "version": "1.18",
+        "tags": {
+            "environment": "staging",
+            "martins": "tutorial"
+        }
+    },
+    "iam": {
+        "withOIDC": false,
+        "vpcResourceControllerPolicy": true
+    },
+    "vpc": {
+        "cidr": "192.168.0.0/16",
+        "subnets": {
+            "private": {
+                "us-east-2a": {
+                    "az": "us-east-2a",
+                    "cidr": "192.168.128.0/19"
+                },
+                "us-east-2b": {
+                    "az": "us-east-2b",
+                    "cidr": "192.168.96.0/19"
+                },
+                "us-east-2c": {
+                    "az": "us-east-2c",
+                    "cidr": "192.168.160.0/19"
+                }
+            },
+            "public": {
+                "us-east-2a": {
+                    "az": "us-east-2a",
+                    "cidr": "192.168.32.0/19"
+                },
+                "us-east-2b": {
+                    "az": "us-east-2b",
+                    "cidr": "192.168.0.0/19"
+                },
+                "us-east-2c": {
+                    "az": "us-east-2c",
+                    "cidr": "192.168.64.0/19"
+                }
+            }
+        },
+        "autoAllocateIPv6": false,
+        "nat": {
+            "gateway": "Single"
+        },
+        "clusterEndpoints": {
+            "privateAccess": false,
+            "publicAccess": true
+        }
+    },
+    "privateCluster": {
+        "enabled": false
+    },
+    "nodeGroups": [
+        {
+            "name": "ng-a4a0341e",
+            "amiFamily": "AmazonLinux2",
+            "instanceType": "t3.medium",
+            "minSize": 0,
+            "maxSize": 2,
+            "volumeSize": 80,
+            "ssh": {
+                "allow": false,
+                "enableSsm": false
+            },
+            "labels": {
+                "alpha.eksctl.io/cluster-name": "Z2JHKubernetesCluster",
+                "alpha.eksctl.io/nodegroup-name": "ng-a4a0341e"
+            },
+            "privateNetworking": false,
+            "iam": {
+                "withAddonPolicies": {
+                    "imageBuilder": false,
+                    "autoScaler": true,
+                    "externalDNS": false,
+                    "certManager": false,
+                    "appMesh": false,
+                    "appMeshPreview": false,
+                    "ebs": false,
+                    "fsx": false,
+                    "efs": false,
+                    "albIngress": false,
+                    "xRay": false,
+                    "cloudWatch": false
+                }
+            },
+            "ami": "ami-0a03956628dc3ddaf",
+            "securityGroups": {
+                "withShared": true,
+                "withLocal": true
+            },
+            "volumeType": "gp2",
+            "volumeName": "/dev/xvda",
+            "AdditionalEncryptedVolume": "",
+            "volumeEncrypted": false,
+            "disableIMDSv1": false,
+            "disablePodIMDS": false
+        }
+    ],
+    "availabilityZones": [
+        "us-east-2b",
+        "us-east-2a",
+        "us-east-2c"
+    ],
+    "cloudWatch": {
+        "clusterLogging": {}
+    }
+}
+
