@@ -6,6 +6,9 @@ eksctl create cluster --tags environment=staging,martins=tutorial --region=us-ea
 
 eksctl create cluster -f cluster_odp.yaml
 
+
+eksctl delete cluster --name=Z2JHKubernetesCluster
+
 # regarding auto scaling:
 
 # You will still need to install and configure Auto Scaling. See the "Enable Auto Scaling" section.
@@ -15,3 +18,6 @@ eksctl create cluster -f cluster_odp.yaml
 # inspecting resources:
 
 eksctl utils describe-stacks --region=us-east-2 --name=Z2JHKubernetesCluster
+
+nc -vvv ac9abff225c9342a5860199defabb22a-1674509960.us-east-2.elb.amazonaws.com 80
+Connection to ac9abff225c9342a5860199defabb22a-1674509960.us-east-2.elb.amazonaws.com port 80 [tcp/http] succeeded!

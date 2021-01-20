@@ -1,0 +1,8 @@
+helm upgrade binderhub-1611096639 jupyterhub/binderhub --version=0.2.0-n472.h32e06ee -f secret.yaml -f config.yaml
+NAMESPACE     NAME           TYPE           CLUSTER-IP      EXTERNAL-IP                                                               PORT(S)         AGE
+default       binder         LoadBalancer   10.100.124.0    a0e5732946bdd483a983adb26438fcf5-976249033.us-east-2.elb.amazonaws.com    80:32433/TCP    29m
+default       hub            ClusterIP      10.100.203.29   <none>                                                                    8081/TCP        29m
+default       kubernetes     ClusterIP      10.100.0.1      <none>                                                                    443/TCP         3h36m
+default       proxy-api      ClusterIP      10.100.71.198   <none>                                                                    8001/TCP        29m
+default       proxy-public   LoadBalancer   10.100.235.30   ac9abff225c9342a5860199defabb22a-1674509960.us-east-2.elb.amazonaws.com   80:30294/TCP    29m
+kube-system   kube-dns       ClusterIP      10.100.0.10     <none>                                                                    53/UDP,53/TCP   3h36m

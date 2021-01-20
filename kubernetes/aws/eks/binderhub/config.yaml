@@ -1,0 +1,7 @@
+config:
+  BinderHub:
+    use_registry: true
+    image_prefix: ggmartins/odptest-
+
+### update this:
+#    hub_url: http://ac9abff225c9342a5860199defabb22a-1674509960.us-east-2.elb.amazonaws.com

@@ -1,0 +1,12 @@
+NAME: binderhub-1611096639
+LAST DEPLOYED: Tue Jan 19 16:50:42 2021
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+1. Get the application URL by running these commands:
+     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+           You can watch the status of by running 'kubectl get svc -w binderhub-1611096639-binderhub'
+  export SERVICE_IP=$(kubectl get svc --namespace default binderhub-1611096639-binderhub -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+  echo http://$SERVICE_IP:
