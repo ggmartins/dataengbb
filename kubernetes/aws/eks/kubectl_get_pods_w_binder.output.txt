@@ -1,0 +1,10 @@
+kubectl get pods -o wide --all-namespaces 
+NAMESPACE     NAME                              READY   STATUS    RESTARTS   AGE    IP       NODE     NOMINATED NODE   READINESS GATES
+default       binder-84c6c65c5d-dbtd7           0/1     Pending   0          170m   <none>   <none>   <none>           <none>
+default       binder-9c896665d-ct4pc            0/1     Pending   0          178m   <none>   <none>   <none>           <none>
+default       hub-5f57f5cbfd-7vspd              0/1     Pending   0          178m   <none>   <none>   <none>           <none>
+default       proxy-bd9c5fb6-vh2b6              0/1     Pending   0          178m   <none>   <none>   <none>           <none>
+default       user-scheduler-7fcf7bcdd9-65fbn   0/1     Pending   0          178m   <none>   <none>   <none>           <none>
+default       user-scheduler-7fcf7bcdd9-nggrg   0/1     Pending   0          178m   <none>   <none>   <none>           <none>
+kube-system   coredns-66bc8b7b7b-j55bm          0/1     Pending   0          3h9m   <none>   <none>   <none>           <none>
+kube-system   coredns-66bc8b7b7b-zv5n2          0/1     Pending   0          3h9m   <none>   <none>   <none>           <none>

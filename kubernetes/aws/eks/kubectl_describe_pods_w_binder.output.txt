@@ -1,0 +1,375 @@
+Name:           binder-84c6c65c5d-dbtd7
+Namespace:      default
+Priority:       0
+Node:           <none>
+Labels:         app=binder
+                component=binder
+                heritage=Helm
+                name=binder
+                pod-template-hash=84c6c65c5d
+                release=binderhub-1611164044
+Annotations:    checksum/config-map: 8f6f38bf795160ba36c0d7b4291c10abac52b68bfa5157e99e68aa85ce1733a2
+                checksum/secret: 1db60e923fd7f9753ff197115b874fd2c0649f8cf30cfc8abc36d7fa5f19b9c8
+                kubernetes.io/psp: eks.privileged
+Status:         Pending
+IP:             
+IPs:            <none>
+Controlled By:  ReplicaSet/binder-84c6c65c5d
+Containers:
+  binder:
+    Image:      jupyterhub/k8s-binderhub:0.2.0-n471.hf76e37e
+    Port:       8585/TCP
+    Host Port:  0/TCP
+    Args:
+      --config
+      /etc/binderhub/config/binderhub_config.py
+    Requests:
+      cpu:      200m
+      memory:   512Mi
+    Liveness:   http-get http://:binder/versions delay=10s timeout=10s period=5s #success=1 #failure=3
+    Readiness:  http-get http://:binder/versions delay=0s timeout=3s period=5s #success=1 #failure=1000
+    Environment:
+      BUILD_NAMESPACE:       default (v1:metadata.namespace)
+      JUPYTERHUB_API_TOKEN:  <set to the key 'binder.hub-token' in secret 'binder-secret'>  Optional: false
+    Mounts:
+      /etc/binderhub/config/ from config (rw)
+      /etc/binderhub/secret/ from secret-config (rw)
+      /root/.docker from docker-secret (ro)
+      /var/run/secrets/kubernetes.io/serviceaccount from binderhub-token-lxfdt (ro)
+Conditions:
+  Type           Status
+  PodScheduled   False 
+Volumes:
+  config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      binder-config
+    Optional:  false
+  secret-config:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  binder-secret
+    Optional:    false
+  docker-secret:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  binder-push-secret
+    Optional:    false
+  binderhub-token-lxfdt:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  binderhub-token-lxfdt
+    Optional:    false
+QoS Class:       Burstable
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason            Age                     From               Message
+  ----     ------            ----                    ----               -------
+  Warning  FailedScheduling  2m53s (x116 over 173m)  default-scheduler  no nodes available to schedule pods
+
+
+Name:           binder-9c896665d-ct4pc
+Namespace:      default
+Priority:       0
+Node:           <none>
+Labels:         app=binder
+                component=binder
+                heritage=Helm
+                name=binder
+                pod-template-hash=9c896665d
+                release=binderhub-1611164044
+Annotations:    checksum/config-map: 5b10944ae21e43b100d1df005c385b75453d0c0160e06aff03a7e12c72dfd70d
+                checksum/secret: 1db60e923fd7f9753ff197115b874fd2c0649f8cf30cfc8abc36d7fa5f19b9c8
+                kubernetes.io/psp: eks.privileged
+Status:         Pending
+IP:             
+IPs:            <none>
+Controlled By:  ReplicaSet/binder-9c896665d
+Containers:
+  binder:
+    Image:      jupyterhub/k8s-binderhub:0.2.0-n471.hf76e37e
+    Port:       8585/TCP
+    Host Port:  0/TCP
+    Args:
+      --config
+      /etc/binderhub/config/binderhub_config.py
+    Requests:
+      cpu:      200m
+      memory:   512Mi
+    Liveness:   http-get http://:binder/versions delay=10s timeout=10s period=5s #success=1 #failure=3
+    Readiness:  http-get http://:binder/versions delay=0s timeout=3s period=5s #success=1 #failure=1000
+    Environment:
+      BUILD_NAMESPACE:       default (v1:metadata.namespace)
+      JUPYTERHUB_API_TOKEN:  <set to the key 'binder.hub-token' in secret 'binder-secret'>  Optional: false
+    Mounts:
+      /etc/binderhub/config/ from config (rw)
+      /etc/binderhub/secret/ from secret-config (rw)
+      /root/.docker from docker-secret (ro)
+      /var/run/secrets/kubernetes.io/serviceaccount from binderhub-token-lxfdt (ro)
+Conditions:
+  Type           Status
+  PodScheduled   False 
+Volumes:
+  config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      binder-config
+    Optional:  false
+  secret-config:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  binder-secret
+    Optional:    false
+  docker-secret:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  binder-push-secret
+    Optional:    false
+  binderhub-token-lxfdt:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  binderhub-token-lxfdt
+    Optional:    false
+QoS Class:       Burstable
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason            Age                   From               Message
+  ----     ------            ----                  ----               -------
+  Warning  FailedScheduling  53s (x125 over 3h2m)  default-scheduler  no nodes available to schedule pods
+
+
+Name:           hub-5f57f5cbfd-7vspd
+Namespace:      default
+Priority:       0
+Node:           <none>
+Labels:         app=jupyterhub
+                component=hub
+                hub.jupyter.org/network-access-proxy-api=true
+                hub.jupyter.org/network-access-proxy-http=true
+                hub.jupyter.org/network-access-singleuser=true
+                pod-template-hash=5f57f5cbfd
+                release=binderhub-1611164044
+Annotations:    checksum/config-map: 66ce292c946ff853fa8217bc1554b14b4d25e299b75e17c40c03a1f4179085fe
+                checksum/secret: 80673d0691b7be29460e0ae6531dc33642b1ade9337c166f5d9cd2f600d2727a
+                kubernetes.io/psp: eks.privileged
+Status:         Pending
+IP:             
+IPs:            <none>
+Controlled By:  ReplicaSet/hub-5f57f5cbfd
+Containers:
+  hub:
+    Image:      jupyterhub/k8s-hub:0.10.6
+    Port:       8081/TCP
+    Host Port:  0/TCP
+    Args:
+      jupyterhub
+      --config
+      /etc/jupyterhub/jupyterhub_config.py
+      --upgrade-db
+    Requests:
+      cpu:      200m
+      memory:   512Mi
+    Readiness:  http-get http://:http/hub/health delay=0s timeout=1s period=2s #success=1 #failure=3
+    Environment:
+      PYTHONUNBUFFERED:        1
+      HELM_RELEASE_NAME:       binderhub-1611164044
+      POD_NAMESPACE:           default (v1:metadata.namespace)
+      CONFIGPROXY_AUTH_TOKEN:  <set to the key 'proxy.token' in secret 'hub-secret'>  Optional: false
+    Mounts:
+      /etc/jupyterhub/config/ from config (rw)
+      /etc/jupyterhub/jupyterhub_config.py from config (rw,path="jupyterhub_config.py")
+      /etc/jupyterhub/secret/ from secret (rw)
+      /etc/jupyterhub/z2jh.py from config (rw,path="z2jh.py")
+      /srv/jupyterhub from hub-db-dir (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from hub-token-4965j (ro)
+Conditions:
+  Type           Status
+  PodScheduled   False 
+Volumes:
+  config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      hub-config
+    Optional:  false
+  secret:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  hub-secret
+    Optional:    false
+  hub-db-dir:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  hub-db-dir
+    ReadOnly:   false
+  hub-token-4965j:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  hub-token-4965j
+    Optional:    false
+QoS Class:       Burstable
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason            Age                    From               Message
+  ----     ------            ----                   ----               -------
+  Warning  FailedScheduling  113s (x124 over 3h2m)  default-scheduler  no nodes available to schedule pods
+
+
+Name:           proxy-bd9c5fb6-vh2b6
+Namespace:      default
+Priority:       0
+Node:           <none>
+Labels:         app=jupyterhub
+                component=proxy
+                hub.jupyter.org/network-access-hub=true
+                hub.jupyter.org/network-access-singleuser=true
+                pod-template-hash=bd9c5fb6
+                release=binderhub-1611164044
+Annotations:    checksum/hub-secret: c21c0412930438ce9232e8b211812190f7f8bda7b4dbb500701755558d4ba41b
+                checksum/proxy-secret: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
+                kubernetes.io/psp: eks.privileged
+Status:         Pending
+IP:             
+IPs:            <none>
+Controlled By:  ReplicaSet/proxy-bd9c5fb6
+Containers:
+  chp:
+    Image:       jupyterhub/configurable-http-proxy:4.2.2
+    Ports:       8000/TCP, 8001/TCP
+    Host Ports:  0/TCP, 0/TCP
+    Command:
+      configurable-http-proxy
+      --ip=::
+      --api-ip=::
+      --api-port=8001
+      --default-target=http://hub:$(HUB_SERVICE_PORT)
+      --error-target=http://hub:$(HUB_SERVICE_PORT)/hub/error
+      --port=8000
+    Requests:
+      cpu:      200m
+      memory:   512Mi
+    Liveness:   http-get http://:http/_chp_healthz delay=60s timeout=1s period=10s #success=1 #failure=3
+    Readiness:  http-get http://:http/_chp_healthz delay=0s timeout=1s period=2s #success=1 #failure=3
+    Environment:
+      CONFIGPROXY_AUTH_TOKEN:  <set to the key 'proxy.token' in secret 'hub-secret'>  Optional: false
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-9qzvd (ro)
+Conditions:
+  Type           Status
+  PodScheduled   False 
+Volumes:
+  default-token-9qzvd:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-9qzvd
+    Optional:    false
+QoS Class:       Burstable
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason            Age                    From               Message
+  ----     ------            ----                   ----               -------
+  Warning  FailedScheduling  113s (x124 over 3h2m)  default-scheduler  no nodes available to schedule pods
+
+
+Name:           user-scheduler-7fcf7bcdd9-65fbn
+Namespace:      default
+Priority:       0
+Node:           <none>
+Labels:         app=jupyterhub
+                component=user-scheduler
+                pod-template-hash=7fcf7bcdd9
+                release=binderhub-1611164044
+Annotations:    checksum/config-map: 11e0e4fd04ce5c305e45ab18a2270f163ff69a39aba491fb3cf20f44efc295c7
+                kubernetes.io/psp: eks.privileged
+Status:         Pending
+IP:             
+IPs:            <none>
+Controlled By:  ReplicaSet/user-scheduler-7fcf7bcdd9
+Containers:
+  user-scheduler:
+    Image:      k8s.gcr.io/kube-scheduler:v1.19.2
+    Port:       <none>
+    Host Port:  <none>
+    Command:
+      /usr/local/bin/kube-scheduler
+      --config=/etc/user-scheduler/config.yaml
+      --authentication-skip-lookup=true
+      --v=4
+    Requests:
+      cpu:        50m
+      memory:     256Mi
+    Liveness:     http-get http://:10251/healthz delay=15s timeout=1s period=10s #success=1 #failure=3
+    Readiness:    http-get http://:10251/healthz delay=0s timeout=1s period=10s #success=1 #failure=3
+    Environment:  <none>
+    Mounts:
+      /etc/user-scheduler from config (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from user-scheduler-token-8dqfk (ro)
+Conditions:
+  Type           Status
+  PodScheduled   False 
+Volumes:
+  config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      user-scheduler
+    Optional:  false
+  user-scheduler-token-8dqfk:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  user-scheduler-token-8dqfk
+    Optional:    false
+QoS Class:       Burstable
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason            Age                    From               Message
+  ----     ------            ----                   ----               -------
+  Warning  FailedScheduling  113s (x124 over 3h2m)  default-scheduler  no nodes available to schedule pods
+
+
+Name:           user-scheduler-7fcf7bcdd9-nggrg
+Namespace:      default
+Priority:       0
+Node:           <none>
+Labels:         app=jupyterhub
+                component=user-scheduler
+                pod-template-hash=7fcf7bcdd9
+                release=binderhub-1611164044
+Annotations:    checksum/config-map: 11e0e4fd04ce5c305e45ab18a2270f163ff69a39aba491fb3cf20f44efc295c7
+                kubernetes.io/psp: eks.privileged
+Status:         Pending
+IP:             
+IPs:            <none>
+Controlled By:  ReplicaSet/user-scheduler-7fcf7bcdd9
+Containers:
+  user-scheduler:
+    Image:      k8s.gcr.io/kube-scheduler:v1.19.2
+    Port:       <none>
+    Host Port:  <none>
+    Command:
+      /usr/local/bin/kube-scheduler
+      --config=/etc/user-scheduler/config.yaml
+      --authentication-skip-lookup=true
+      --v=4
+    Requests:
+      cpu:        50m
+      memory:     256Mi
+    Liveness:     http-get http://:10251/healthz delay=15s timeout=1s period=10s #success=1 #failure=3
+    Readiness:    http-get http://:10251/healthz delay=0s timeout=1s period=10s #success=1 #failure=3
+    Environment:  <none>
+    Mounts:
+      /etc/user-scheduler from config (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from user-scheduler-token-8dqfk (ro)
+Conditions:
+  Type           Status
+  PodScheduled   False 
+Volumes:
+  config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      user-scheduler
+    Optional:  false
+  user-scheduler-token-8dqfk:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  user-scheduler-token-8dqfk
+    Optional:    false
+QoS Class:       Burstable
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason            Age                    From               Message
+  ----     ------            ----                   ----               -------
+  Warning  FailedScheduling  113s (x124 over 3h2m)  default-scheduler  no nodes available to schedule pods
