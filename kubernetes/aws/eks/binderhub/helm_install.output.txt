@@ -1,3 +1,4 @@
+helm install jupyterhub/binderhub --version=0.2.0-n472.h32e06ee --generate-name -f secret.yaml -f config.yaml
 NAME: binderhub-1611096639
 LAST DEPLOYED: Tue Jan 19 16:50:42 2021
 NAMESPACE: default
