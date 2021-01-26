@@ -1,0 +1,30 @@
+# file: aws_eks_config.yml
+# AWS EKS ClusterConfig used to setup the BinderHub / JupyterNotebooks K8s cluster
+# using a workaround from https://discourse.jupyter.org/t/binder-deployed-in-aws-eks-domain-name-resolution-errors/766/10
+# to fix broken DNS resolution
+
+# original at https://gist.github.com/tobemedia/2144d74d232ccce8972613e8ae13b054
+# follow-up thread: https://discourse.jupyter.org/t/binder-deployed-in-aws-eks-domain-name-resolution-errors/766/13
+# follow-up thread: https://github.com/weaveworks/eksctl/issues/942 
+--- 
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: Z2JHKubernetesCluster
+  region: us-east-2
+
+nodeGroups:
+  - name: Z2JHKubernetesCluster-nodegroup
+    instanceType: t2.small
+    minSize: 0
+    maxSize: 4
+    desiredCapacity: 2
+    preBootstrapCommands:
+        # Replicate what --enable-docker-bridge does in /etc/eks/bootstrap.sh
+        # Enabling the docker bridge network. We have to disable live-restore as it
+        # prevents docker from recreating the default bridge network on restart
+       - "cp /etc/docker/daemon.json /etc/docker/daemon_backup.json"
+       - "echo -e '.bridge=\"docker0\" | .\"live-restore\"=false' >  /etc/docker/jq_script"
+       - "jq -f /etc/docker/jq_script /etc/docker/daemon_backup.json | tee /etc/docker/daemon.json"
+       - "systemctl restart docker"
