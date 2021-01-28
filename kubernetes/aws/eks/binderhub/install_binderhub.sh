@@ -1,10 +1,16 @@
 #!/bin/bash
 
-BINDERHUB_VERSION=0.2.0-n472.h32e06ee
+#UPDATE binderhub helm chart to the latest version
+#https://jupyterhub.github.io/helm-chart/#development-releases-binderhub
+BINDERHUB_VERSION=0.2.0-n499.h81660eb
 BINDERHUB_CONFIG=config.yaml
 EKSCTL_CONFIG=aws_eks_config.yml
 EKSCTL_SECRET=secret.yaml
 
+#EXIT ON ERROR
+set -e
+
+#leave MACOS empty if you're running from linux
 MACOS=
 
 if [[ "$OSTYPE" == "darwin"* ]];then
@@ -30,21 +36,30 @@ if [ ! -f "$EKSCTL_SECRET" ];then
 fi
 
 echo "INFO: creating eks cluster..."
-#eksctl create cluster --config-file $EKSCTL_CONFIG --verbose=4 > log_eksctl_create_cluster.log
+eksctl create cluster --config-file $EKSCTL_CONFIG --verbose=4 > log_eksctl_create_cluster.log
 
-echo "INFO: installing binderhub via helm"
+echo "INFO: installing binderhub helm chart"
 helm install jupyterhub/binderhub --version=$BINDERHUB_VERSION --generate-name -f $EKSCTL_SECRET -f $EKSCTL_CONFIG > log_helm_install_binderhub.log
 
-exit 0
+echo "INFO: updating helm repo"
+helm repo update
+
 HELM_NAME=$(cat log_helm_install_binderhub.log| grep NAME: | awk '{print $2}')
 echo "INFO: helm name: $HELM_NAME"
 
-kubectl --namespace=default get svc proxy-public > log_kubectl_get_svc_proxy_public.log
+KUBE_PROXY="<pending>"
 
-KUBE_PROXY=$(cat ./log_kubectl_get_svc_proxy_public.log | grep proxy-public | awk '{ print $4 }')
+while [[ $KUBE_PROXY == "<pending>" ]]; do
+	kubectl --namespace=default get svc proxy-public > log_kubectl_get_svc_proxy_public.log
+
+	KUBE_PROXY=$(cat ./log_kubectl_get_svc_proxy_public.log | grep proxy-public | awk '{ print $4 }')
+	sleep 5
+	echo "INFO: waiting on proxy-public address: $KUBE_PROXY"
+done
+
 echo "INFO: kubectl proxy-public: $KUBE_PROXY"
 
-sed -i $MACOS  "s/.*hub_url.*/    hub_url: http://$KUBE_PROXY" config.yaml
+sed -i $MACOS "s/.*hub_url.*/    hub_url: http:\/\/${KUBE_PROXY}/" config.yaml
 
 helm upgrade $HELM_NAME jupyterhub/binderhub --version=$BINDERHUB_VERSION -f $EKSCTL_SECRET -f $EKSCTL_CONFIG > log_helm_upgrade_binderhub.log
 

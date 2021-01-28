@@ -1,3 +1,6 @@
 [submodule "rabbitmq/tls-gen"]
 	path = rabbitmq/tls-gen
 	url = https://github.com/michaelklishin/tls-gen
+[submodule "kubernetes/aws/eks/binderhub/helloworld"]
+	path = kubernetes/aws/eks/binderhub/helloworld
+	url = https://github.com/ggmartins/helloworld-binderhub
