@@ -1,0 +1,14 @@
+#!/bin/bash
+
+d=$(date +%Y%m%d-%H%M%S)
+nout=/tmp/lsop-netstat-$d.txt
+
+netstat -lntp | grep -v '127.0.0.1' > $nout 2>&1
+
+
+for l in $(cat $nout | awk '{ print $7 }' ); do
+	echo '-------'
+	cat $nout | grep $l | grep -v grep
+	pid=$(echo $l | sed 's/\// /g' | awk '{print $1}')
+	ps auxwww | grep $pid | grep -v grep
+done
