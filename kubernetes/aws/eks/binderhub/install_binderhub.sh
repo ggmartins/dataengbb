@@ -39,7 +39,7 @@ echo "INFO: creating eks cluster..."
 eksctl create cluster --config-file $EKSCTL_CONFIG --verbose=4 > log_eksctl_create_cluster.log
 
 echo "INFO: installing binderhub helm chart"
-helm install jupyterhub/binderhub --version=$BINDERHUB_VERSION --generate-name -f $EKSCTL_SECRET -f $EKSCTL_CONFIG > log_helm_install_binderhub.log
+helm install jupyterhub/binderhub --version=$BINDERHUB_VERSION --generate-name -f $EKSCTL_SECRET -f $BINDERHUB_CONFIG > log_helm_install_binderhub.log
 
 echo "INFO: updating helm repo"
 helm repo update
@@ -61,7 +61,7 @@ echo "INFO: kubectl proxy-public: $KUBE_PROXY"
 
 sed -i $MACOS "s/.*hub_url.*/    hub_url: http:\/\/${KUBE_PROXY}/" config.yaml
 
-helm upgrade $HELM_NAME jupyterhub/binderhub --version=$BINDERHUB_VERSION -f $EKSCTL_SECRET -f $EKSCTL_CONFIG > log_helm_upgrade_binderhub.log
+helm upgrade $HELM_NAME jupyterhub/binderhub --version=$BINDERHUB_VERSION -f $EKSCTL_SECRET -f $BINDERHUB_CONFIG > log_helm_upgrade_binderhub.log
 
 kubectl --namespace=default get svc binder > log_kubectl_get_svc_binder.log
 

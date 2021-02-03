@@ -1,0 +1,7 @@
+config:
+  BinderHub:
+    use_registry: true
+    image_prefix: ggmartins/odptest-
+
+### update this:
+    hub_url: http://34.121.21.180
