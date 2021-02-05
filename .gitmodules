@@ -4,3 +4,6 @@
 [submodule "kubernetes/aws/eks/binderhub/helloworld"]
 	path = kubernetes/aws/eks/binderhub/helloworld
 	url = https://github.com/ggmartins/helloworld-binderhub
+[submodule "kubernetes/gc/gke/learn-terraform-provision-gke-cluster"]
+	path = kubernetes/gc/gke/learn-terraform-provision-gke-cluster
+	url = https://github.com/hashicorp/learn-terraform-provision-gke-cluster
