@@ -1,0 +1,21 @@
+gcloud auth activate-service-account $GCEMAIL
+gcloud config set account $GCEMAIL
+gcloud auth application-default login
+gcloud auth login
+gcloud auth list
+gcloud services enable cloudapis.googleapis.com
+gcloud services enable container.googleapis.com
+gcloud config set project $GCPROJECT
+gcloud config get-value project
+gcloud projects describe  $GCPROJECT
+gcloud container clusters get-credentials $(terraform output -raw kubernetes_cluster_name) --region $(terraform output -raw region)
+gcloud container clusters list
+#Troubleshooting: You may see the following warning message when you try to retrieve your cluster credentials. This may be because your Kubernetes cluster is still initializing/updating. If this happens, you can still proceed to the next step.
+#WARNING: cluster dos-terraform-edu-gke is not running. The kubernetes API may not be available.
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml
+kubectl proxy #let it run
+kubectl apply -f https://raw.githubusercontent.com/hashicorp/learn-terraform-provision-gke-cluster/master/kubernetes-dashboard-admin.rbac.yaml
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep service-controller-token | awk '{print $1}')
+kubectl get configmap
+CLOUDSDK_CONTAINER_CLUSTER=$GCPROJECT gcloud beta container node-pools list --region us-central1
+gcloud beta container node-pools list --region us-central1 --cluster $GCPROJECT
