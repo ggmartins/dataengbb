@@ -3,7 +3,7 @@
 #UPDATE binderhub helm chart to the latest version
 #https://jupyterhub.github.io/helm-chart/#development-releases-binderhub
 #https://zero-to-jupyterhub.readthedocs.io/en/latest/kubernetes/google/step-zero-gcp.html
-BINDERHUB_VERSION=0.2.0-n499.h81660eb
+BINDERHUB_VERSION=0.2.0-n514.h9fb668d
 BINDERHUB_CONFIG=config.yaml
 JPYHUB_SECRET=secret.yaml
 GCUSEREMAIL=

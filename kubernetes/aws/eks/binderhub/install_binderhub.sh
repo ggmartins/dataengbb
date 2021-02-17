@@ -2,7 +2,7 @@
 
 #UPDATE binderhub helm chart to the latest version
 #https://jupyterhub.github.io/helm-chart/#development-releases-binderhub
-BINDERHUB_VERSION=0.2.0-n499.h81660eb
+BINDERHUB_VERSION=0.2.0-n514.h9fb668d
 BINDERHUB_CONFIG=config.yaml
 EKSCTL_CONFIG=aws_eks_config.yml
 EKSCTL_SECRET=secret.yaml
