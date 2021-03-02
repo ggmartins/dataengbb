@@ -9,10 +9,12 @@ gcloud services enable container.googleapis.com
 gcloud config set project $GCPROJECT
 gcloud config get-value project
 gcloud projects describe  $GCPROJECT
+gcloud projects add-iam-policy-binding $GCPROJECT --member=user:$GCEMAIL --role=roles/container.admin ##binding, (admin)
 gcloud container clusters get-credentials $(terraform output -raw kubernetes_cluster_name) --region $(terraform output -raw region)
 gcloud container clusters list
 #Troubleshooting: You may see the following warning message when you try to retrieve your cluster credentials. This may be because your Kubernetes cluster is still initializing/updating. If this happens, you can still proceed to the next step.
 #WARNING: cluster dos-terraform-edu-gke is not running. The kubernetes API may not be available.
+kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$GCEMAIL ##binding
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml
 kubectl proxy #let it run
 kubectl apply -f https://raw.githubusercontent.com/hashicorp/learn-terraform-provision-gke-cluster/master/kubernetes-dashboard-admin.rbac.yaml
