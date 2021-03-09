@@ -21,5 +21,6 @@ kubectl apply -f https://raw.githubusercontent.com/hashicorp/learn-terraform-pro
 kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep service-controller-token | awk '{print $1}')
 kubectl get configmap
 kubectl -n kubernetes-dashboard get secret
+kubectl -n kubernetes-dashboard describe secrets kubernetes-dashboard-token-x9nd8
 CLOUDSDK_CONTAINER_CLUSTER=$GCPROJECT gcloud beta container node-pools list --region us-central1
 gcloud beta container node-pools list --region us-central1 --cluster $GCPROJECT
