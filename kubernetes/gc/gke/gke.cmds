@@ -20,5 +20,6 @@ kubectl proxy #let it run
 kubectl apply -f https://raw.githubusercontent.com/hashicorp/learn-terraform-provision-gke-cluster/master/kubernetes-dashboard-admin.rbac.yaml
 kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep service-controller-token | awk '{print $1}')
 kubectl get configmap
+kubectl -n kubernetes-dashboard get secret
 CLOUDSDK_CONTAINER_CLUSTER=$GCPROJECT gcloud beta container node-pools list --region us-central1
 gcloud beta container node-pools list --region us-central1 --cluster $GCPROJECT
