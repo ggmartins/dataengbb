@@ -1,0 +1,1 @@
+influx -ssl --host $HOSTo -port $PORT -execute 'ALTER RETENTION POLICY rp ON $DB DURATION INF REPLICATION 1 SHARD DURATION 4w DEFAULT' -database="$DB"
