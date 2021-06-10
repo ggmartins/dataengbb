@@ -1,0 +1,1 @@
+NMFTPUSER= NMFTPPASS= NMFTPPORT= ./ftpserver.py
