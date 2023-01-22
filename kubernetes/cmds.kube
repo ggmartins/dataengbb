@@ -1,0 +1,269 @@
+kubectl get ns
+kubectl get all -n default
+kubectl api-resources
+kubectl get serviceaccount
+kubectl create token default
+https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
+https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md
+kubectl get serviceaccount kubernetes-dashboard -n kubernetes-dashboard -o yaml
+kubectl get secret
+kubectl get secret default-token-c7lwd -o jsonpath='{.data.token}' | base64 -d
+kubectl get pods --all-namespaces
+kubectl get pods -o wide -n default
+kubectl get services --all-namespaces
+kubectl logs -n kube-system pods/metrics-server-575cf78fb-d2tmk
+kubectl logs -n kube-system pods/metrics-server-599b86cfbf-spw4w
+kubectl edit deployment.apps/metrics-server -n kube-system
+kubectl edit deployments/metrics-server -n kube-system
+- --kubelet-insecure-tls=true
+eval $(minikube docker-env)
+kubectl expose deployment opendata-frontend --type=NodePort --name=api
+kubectl get pods -l app=frontend -o jsonpath='{.items[0].metadata.name}'
+minikube service api
+minikube addons enable ingress (Extra)
+kubectl port-forward opendata-frontend-58f86c8c99-87587 9999:8000
+https://stackoverflow.com/questions/68648198/metrics-service-in-kubernetes-not-working
+https://stackoverflow.com/questions/68885798/kubernetes-dashboard-web-ui-has-nothing-to-display
+https://stackoverflow.com/questions/34848422/how-can-i-debug-imagepullbackoff
+https://stackoverflow.com/questions/56392041/getting-errimageneverpull-in-pods
+kubectl config get-contexts
+kubectl proxy
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml
+https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/.
+https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0
+https://www.youtube.com/watch?v=80Ew_fsV4rM&ab_channel=TechWorldwithNana
+https://stackoverflow.com/questions/58561682/minikube-with-ingress-example-not-working
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dataforalldev-ingress
+  namespace: default
+spec:
+  defaultBackend:
+    service:
+      name: api
+      port:
+        number: 8000
+
+
+
+kubectl version
+kubectl get componentstatuses
+kubectl get nodes
+kubectl describe nodes kube1
+kubectl get daemonSets --namespace=kube-system kube-proxy
+kubectl get deployments --namespace=kube-system kube-dns
+kubectl get services --namespace=kube-system core-dns
+kubectl config set-context mycontext --namespace=app (--users) (--clusters)
+kubectl config use-context mycontext
+
+kubectl get pods my-pod -o jsonpath --template={.status.podIP}
+kubectl get pods,services
+
+kubectl describe <resource-name> <obj-name>
+kubectl explain pods (--watch)
+
+kubectl apply -f obj.yaml (--dry-run)
+
+kubectl edit <resource-name> <obj-name>
+
+kubectl apply -f obj.yaml view-last-applied 
+kubectl apply -f obj.yaml set-last-applied 
+kubectl apply -f obj.yaml edit-last-applied 
+
+kubectl delete -f obj.yml
+kubectl delete <resource-name> <obj-name>
+
+kubectl label pods mypod color=red (--overwrite)
+kubectl label pods mypod color=-
+
+kubectl annotate pods mypod color=red (--overwrite)
+kubectl annotate pods mypod color=-
+
+kubectl logs <pod-name> (-c <container-name>) (-f)
+
+kubectl exec -it <pod-name> -- bash
+
+kubectl attach -it <pod-name>
+
+kubectl cp <pod-name>:/path/to/file /path/to/file
+
+kubectl port-forward <pod-name> 8080:80
+
+kubectl port-forward services/<service-name> 8080:80
+
+kubectl get events (--watch) (-A all namespaces)
+kubectl top nodes
+kubectl top pods
+
+kubectl cordon <node-name>
+kubectl uncordon <node-name>
+kubectl drain <node-name>
+kubectl undrain <node-name>
+
+find the replicaset owner
+kubectl get pods <pod-name> -o=jsonpath='{.metadata.ownerReferences[0].name}'
+kubectl get pods -l app=kuard,version=2
+kubectl scale replicasets kuard --replicas=4
+kubectl autoscale rs kuard --min=2 --max=5 --cpu-percent=80
+kubectl get hpa
+will delete the replicaset object, not the pods 
+kubectl delete rs kuard --cascade=false
+kubectl get deployments kuard \
+  -o jsonpath --template {.spec.selector.matchLabels}
+kubectl get replicasets --selector=run=kuard
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kuard
+  labels:
+    run: kuard
+spec:
+  selector:
+    matchlabels:
+      run: kuard
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: kuard
+    spec:
+      containers:
+        - name: kuard
+          image: gcr.io/kuar-demo/kuard-amd64:blue
+
+kubectl create -f kuard-deployment.yaml
+replicas: 1
+kubectl scale deployments kuard --replicas=2
+replicas: 2
+kubectl scale replicasets kuard-1128242161 --replicas=1
+replicas: 1
+replicas: 2
+
+kubectl get deployments kuard -o yaml > kuard-deployment.yaml
+kubectl replace -f kuard-deployment.yaml --save-config
+
+
+...
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+...
+
+Two of the most important pieces of information in the output are OldReplicaSets and NewReplicaSet. 
+These fields point to the ReplicaSet objects this Deployment is currently managing. 
+If a Deployment is in the middle of a rollout, both fields will be set to a value. 
+If a rollout is complete, OldReplicaSets will be set to <none>.
+
+kubectl rollout status deployments 
+kubectl rollout history
+
+
+Update replicas in deployments to scale up
+Update image to update container
+
+- image: gcr.io/kuar-demo/kuard-amd64:blue
+- image: gcr.io/kuar-demo/kuard-amd64:green
+
+Make sure you add this annotation to the template and not the Deployment itself, since the kubectl apply command uses this field in the Deployment object.
+Also, do not update the change-cause annotation when doing simple scaling operations.
+A modification of change-cause is a significant change to the template and will trigger a new rollout.
+
+kubectl rollout pause deployments kuard --revision=2
+kubectl rollout undo deployments kuard
+kubectl rollout undo deployments kuard --to-revision=3
+kubectl rollout history
+kubectl rollout status
+kubectl rollout restart
+kubectl rollout resume
+revisionHistoryLimit: 14 (default 10)
+
+RollingUpdate
+The maxUnavailable parameter sets the maximum number of Pods that can be unavailable during a rolling update.
+It can either be set to an absolute number (e.g., 3, meaning a maximum of three Pods can be unavailable) or
+to a percentage (e.g., 20%, meaning a maximum of 20% of the desired
+The maxSurge parameter controls how many extra resources can be created to achieve a rollout.
+
+
+In most real-world scenarios, you want to wait a period of time to have high confidence that the new version is operating correctly before you move on to updating the next Pod.
+
+...
+spec:
+  minReadySeconds: 60
+...
+
+Setting minReadySeconds to 60 indicates that the Deployment must wait for 60 seconds after seeing a Pod become healthy before moving on to updating the next Pod.
+
+
+In order to set the timeout period, you will use the Deployment parameter progressDeadlineSeconds: ...
+spec:
+  progressDeadlineSeconds: 600
+...
+
+
+DaemonSets:
+cluster. Another reason is to schedule a single Pod on every node within the cluster. Generally, the motivation for replicating a Pod to every node is to land some sort of agent or daemon on each node,
+
+A DaemonSet ensures that a copy of a Pod is running across a set of nodes in a Kubernetes cluster.
+DaemonSets are used to deploy system daemons such as log collectors and monitoring agents, which typically must run on every node.
+
+DaemonSets should be used when a single copy of your application must run on all or a subset of the nodes in the cluster.
+
+kubectl describe daemonset fluentd
+kubectl get pods -l app=fluentd -o wide
+label a node to use on DaemonSet
+kubectl label nodes k0-default-pool-35609c18-z7tb ssd=true
+
+apiVersion: apps/v1
+kind: "DaemonSet"
+metadata:
+  labels:
+    app: nginx
+    ssd: "true"
+  name: nginx-fast-storage
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+      ssd: "true"
+  template:
+    metadata:
+      labels:
+        app: nginx
+        ssd: "true"
+    spec:
+      nodeSelector:
+        ssd: "true"
+      containers:
+        - name: nginx
+          image: nginx:1.10.0
+
+Removing labels from a node that are required by a DaemonSet’s node selector will cause the Pod being managed by that DaemonSet to be removed from the node.
+kubectl create secret generic kuard-tls \
+  --from-file=kuard.crt \
+  --from-file=kuard.key
+kubectl describe secrets kuard-tls
+
+For private registries:
+kubectl create secret docker-registry
+
+kubectl create secret docker-registry my-image-pull-secret \
+  --docker-username=<username> \
+  --docker-password=<password> \
+  --docker-email=<email-address>
+
+kubectl create secret generic kuard-tls \
+  --from-file=kuard.crt --from-file=kuard.key \
+  --dry-run -o yaml | kubectl replace -f -
+
+kubectl auth can-i create pods
+kubectl auth can-i get pods --subresource=logs
+kubectl auth reconcile --dry-run -f some-rbac-config.yaml
+
+
+
