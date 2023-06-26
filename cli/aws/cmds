@@ -1,0 +1,35 @@
+aws --profile netrics-netrics s3api create-bucket \
+--bucket $BUCKETNAME \
+--create-bucket-configuration \
+--region us-east-2 LocationConstraint=us-east-2
+
+aws s3api get-object --bucket $BUCKETNAME --key $OBJECTPATH
+
+aws s3 ls s3://$BUCKETNAME/$BUCKETPATH
+
+aws s3api put-object-acl --bucket $BUCKETNAME --key index.html --acl public-read
+
+aws cloudwatch get-metric-statistics \
+--namespace AWS/Lambda \
+--metric-name Invocations \
+--dimensions Name=FunctionName,Value=$FUNCTIONNAME \
+--statistics SampleCount \
+--period 60 \
+--start-time 2021-05-01T00:00:00 \
+--end-time 2023-05-01T23:59:00
+
+
+aws cloudwatch get-metric-statistics \
+   --namespace AWS/Lambda \
+   --metric-name Invocations \
+   --dimensions Name=FunctionName,Value=$FUNCTIONNAME \
+   --statistics SampleCount \
+   --period 360 --start-time 2023-05-01T00:00:00 --end-time 2023-05-02T23:59:00
+
+aws cloudwatch get-metric-statistics \
+   --namespace AWS/S3 \
+   --metric-name BucketSizeBytes \
+   --dimensions Name=BucketName,Value=$BUCKETNAME \
+   --statistics Average \
+   --period 360 --start-time 2023-05-01T00:00:00 --end-time 2023-05-02T23:59:00
+
