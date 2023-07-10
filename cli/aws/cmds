@@ -33,3 +33,9 @@ aws cloudwatch get-metric-statistics \
    --statistics Average \
    --period 360 --start-time 2023-05-01T00:00:00 --end-time 2023-05-02T23:59:00
 
+aws logs filter-log-events  \
+   --start-time $((`date +%s` - (60 * 5)))000  \
+   --end-time $(date +%s)000  \
+   --log-group-name /aws/lambda/$LAMBDA_FUNC_NAME  \
+   --region us-east-2
+
