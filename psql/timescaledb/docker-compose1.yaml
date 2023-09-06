@@ -1,0 +1,13 @@
+version: '2'
+services:
+  timescale:
+    image: timescale/timescaledb:latest-pg15
+    restart: always
+    hostname: "postgres"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 
+    volumes:
+    - /data/postgres_netrics/:/var/lib/postgresql/data
+    ports:
+    - "127.0.0.1:5432:5432"
