@@ -1,0 +1,23 @@
+# US Azure region for the VM.
+# Examples: eastus, eastus2, centralus, southcentralus, westus3
+location = "eastus"
+
+resource_group_name = "rg-win11-us-lowcost"
+
+# Cheap practical Windows 11 option. B1s is usually too small for Windows 11.
+vm_size = "Standard_B2s" # for testing ultra low memory enviroments 
+# vm_size = "Standard_B2ms"
+
+admin_username = "azureuser"
+
+# Replace with a strong password.
+# Azure requires Windows password complexity.
+admin_password = "Use-A-Strong-Password-Here-123!"
+
+# Replace with your Brazilian public IP in CIDR format.
+# Example: 189.10.20.30/32
+allowed_rdp_ip = "YOUR_PUBLIC_IP/32"
+
+# If this SKU is unavailable, run:
+# az vm image list --location eastus --publisher MicrosoftWindowsDesktop --offer windows-11 --all --output table
+windows_11_sku = "win11-24h2-pro"
