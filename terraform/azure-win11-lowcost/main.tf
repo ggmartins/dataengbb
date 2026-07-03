@@ -140,7 +140,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
     name                 = "osdisk-${local.name_prefix}"
     caching              = "ReadWrite"
     storage_account_type = var.os_disk_storage_account_type
-    disk_size_gb         = 32
+    disk_size_gb         = 127
   }
 
   source_image_reference {
