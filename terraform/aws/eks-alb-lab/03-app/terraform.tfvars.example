@@ -1,0 +1,4 @@
+tls_mode    = "off"
+target_type = "ip"
+hostname    = "alb-lab.example.test"
+create_trust_store = false

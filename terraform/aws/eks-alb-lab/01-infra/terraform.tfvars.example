@@ -1,0 +1,4 @@
+region             = "us-east-1"
+name               = "eks-alb-lab"
+kubernetes_version = "1.35"
+allowed_cidr       = "1.1.1.1/32" # Replace with YOUR public IPv4 address.
