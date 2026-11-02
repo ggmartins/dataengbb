@@ -1,0 +1,9 @@
+aws_region      = "us-east-1"
+name            = "mtls-lambda-example"
+domain_name     = "mtls.example.com"
+certificate_arn = "arn:aws:acm:us-east-1:123456789012:certificate/REPLACE-ME"
+hosted_zone_id  = "Z0123456789EXAMPLE"
+truststore_uri  = "s3://YOUR-TRUSTSTORE-BUCKET/truststore.pem"
+
+# For an S3 bucket with versioning enabled, pin the truststore object version:
+# truststore_version = "REPLACE-WITH-S3-OBJECT-VERSION-ID"

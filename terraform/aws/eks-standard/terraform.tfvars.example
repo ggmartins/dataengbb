@@ -1,0 +1,12 @@
+aws_region         = "us-east-1"
+cluster_name       = "eks-standard"
+environment        = "dev"
+kubernetes_version = "1.36"
+
+# Replace this documentation address with YOUR public IPv4 address /32.
+# If using a VPN, use its outbound public IP or your organization's approved CIDR.
+admin_cidrs = ["203.0.113.10/32"]
+
+# Default: three NAT gateways, one per Availability Zone.
+# For a lower-cost lab, set true to share one NAT gateway across all three AZs.
+single_nat_gateway = false
