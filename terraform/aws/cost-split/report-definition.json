@@ -1,0 +1,12 @@
+{
+ "ReportName": "eks-split-cost-report",
+ "TimeUnit": "HOURLY",
+ "Format": "textORcsv",
+ "Compression": "GZIP",
+ "AdditionalSchemaElements": ["RESOURCES", "SPLIT_COST_ALLOCATION_DATA"],
+ "S3Bucket": "my-cur-bucket",
+ "S3Prefix": "cur",
+ "S3Region": "us-east-1",
+ "RefreshClosedReports": true,
+ "ReportVersioning": "OVERWRITE_REPORT"
+}
