@@ -1,7 +1,7 @@
 {{/*
 Place in helm/cluster-level-resources/templates/alb-controller-mtls.yaml.
 
-This alternative keeps the existing Argo CD Application/release name and adds
+This alternative uses the alb-controller-mtls Argo CD Application/release name and adds
 a dedicated, HTTPS-only Ingress whose ALB verifies client certificates.
 Disable alb-controller.enabled to avoid rendering the Application twice.
 The controller settings still come from the existing alb-controller values.
@@ -56,7 +56,7 @@ mTLS settings belong to this Ingress, not that controller values file.
 {{- $mtls := index .Values "alb-controller-mtls" | default dict -}}
 {{- if $mtls.enabled -}}
 {{- if $alb.enabled -}}
-{{- fail "Set alb-controller.enabled=false when alb-controller-mtls.enabled=true; both templates manage the same alb-controller Application/release." -}}
+{{- fail "Set alb-controller.enabled=false when alb-controller-mtls.enabled=true to avoid deploying two controller releases." -}}
 {{- end -}}
 {{- $configuration := $alb.configuration | default dict -}}
 {{- $valuesRepo := .Values.configuration | default dict -}}
@@ -67,7 +67,7 @@ mTLS settings belong to this Ingress, not that controller values file.
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: alb-controller
+  name: alb-controller-mtls
   namespace: argocd
 spec:
   project: default
@@ -76,7 +76,7 @@ spec:
       repoURL: https://aws.github.io/eks-charts
       targetRevision: {{ required "Set alb-controller.targetRevision to the AWS controller Helm chart version" $alb.targetRevision | quote }}
       helm:
-        releaseName: alb-controller
+        releaseName: alb-controller-mtls
         {{- if $configuration.enabled }}
         valueFiles:
           - {{ printf "$values/%s/cluster-values/alb-controller.yaml" (required "Set cluster for the external controller values path" .Values.cluster) | quote }}
