@@ -1,0 +1,62 @@
+---
+# Source: alb-mtls-preview/templates/alb-controller-mtls1.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "revproxy-mtls"
+  namespace: "gen3"
+  annotations:
+    alb.ingress.kubernetes.io/scheme: "internet-facing"
+    alb.ingress.kubernetes.io/target-type: "instance"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-1:123456789012:certificate/REPLACE_ME"
+    alb.ingress.kubernetes.io/ssl-policy: "ELBSecurityPolicy-TLS13-1-2-2021-06"
+    alb.ingress.kubernetes.io/mutual-authentication: "[{\"ignoreClientCertificateExpiry\":false,\"mode\":\"verify\",\"port\":443,\"trustStore\":\"arn:aws:elasticloadbalancing:us-east-1:123456789012:truststore/REPLACE_ME/REPLACE_ME\"}]"
+spec:
+  ingressClassName: alb
+  rules:
+    - host: "mtls.example.org"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: "revproxy-service"
+                port:
+                  number: 80
+
+
+---
+# Source: alb-mtls-preview/templates/alb-controller-mtls1.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: alb-controller
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - chart: aws-load-balancer-controller
+      repoURL: https://aws.github.io/eks-charts
+      targetRevision: "1.13.4"
+      helm:
+        releaseName: alb-controller
+        values: |
+          clusterName: "my-eks-cluster"
+          serviceAccount:
+            create: true
+            annotations:
+              eks.amazonaws.com/role-arn: "arn:aws:iam::123456789012:role/gen3_service/my-eks-cluster--default--ingress"
+            name: aws-load-balancer-controller
+          metricsBindAddr: "0.0.0.0:8081"
+          hostNetwork: false
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: kube-system
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=false
+    automated:
+      selfHeal: true
+

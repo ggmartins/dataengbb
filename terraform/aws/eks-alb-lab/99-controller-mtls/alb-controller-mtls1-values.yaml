@@ -1,0 +1,28 @@
+# Example overrides for helm/cluster-level-resources.
+# Replace the cluster, account, namespace, hostname and ARN placeholders.
+# Placeholder ARNs are sufficient for local rendering; deploying requires
+# an existing ACM certificate and ALB trust store in the ALB's AWS region.
+cluster: my-eks-cluster
+accountNumber: "123456789012"
+
+# Reuse these controller settings while disabling the original template.
+alb-controller:
+  enabled: false
+  targetRevision: "1.13.4"
+  hostNetworkEnabled: false
+  configuration:
+    enabled: false
+
+alb-controller-mtls:
+  enabled: true
+  ingress:
+    name: revproxy-mtls
+    namespace: gen3
+    hostname: mtls.example.org
+    certificateArn: arn:aws:acm:us-east-1:123456789012:certificate/REPLACE_ME
+    trustStore: arn:aws:elasticloadbalancing:us-east-1:123456789012:truststore/REPLACE_ME/REPLACE_ME
+    scheme: internet-facing
+    targetType: instance
+    serviceName: revproxy-service
+    servicePort: 80
+    sslPolicy: ELBSecurityPolicy-TLS13-1-2-2021-06
