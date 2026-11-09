@@ -118,7 +118,7 @@ commands above before applying.
 
 ## Diagram
 
-<img width="500" src="labs_alb_mtls_prereq1.svg" />
+<img width="1000" src="labs_alb_mtls_prereq1.svg" />
 
 
 ```mermaid
