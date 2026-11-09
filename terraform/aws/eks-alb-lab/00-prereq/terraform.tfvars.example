@@ -1,0 +1,3 @@
+region = "us-east-1" # Same account/region as the existing ALB.
+name = "alb-mtls-test"
+hostname = "mtls.lab.test" # Your test Ingress hostname.
