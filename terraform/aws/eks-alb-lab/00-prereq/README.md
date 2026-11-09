@@ -118,8 +118,7 @@ commands above before applying.
 
 ## Diagram
 
-
-```
+```mermaid
 flowchart TB
     subgraph TF["Created by the Terraform bundle"]
         CA["Test client CA"]
