@@ -118,6 +118,9 @@ commands above before applying.
 
 ## Diagram
 
+<img width="500" src="labs_alb_mtls_prereq1.svg" />
+
+
 ```mermaid
 flowchart TB
     subgraph TF["Created by the Terraform bundle"]
